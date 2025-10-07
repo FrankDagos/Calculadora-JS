@@ -1,0 +1,127 @@
+let valor1 = 0;
+let valor2 = 0;
+let op = "";
+
+/* ==== core ==== */
+function calcular(valor1, valor2, op) {
+  switch (op) {
+    case "+":
+      return valor1 + valor2;
+    case "-":
+      return valor1 - valor2;
+    case "*":
+      return valor1 * valor2;
+    case "/":
+      if (valor2 === 0) return "Error";
+      return valor1 / valor2;
+    default:
+      return "operación no soportada";
+  }
+}
+
+function asignarValor(valor) {
+  // Si no hay operador aún, estamos cargando el primer número
+  if (!op) {
+    valor1 = valor1 * 10 + valor; // permite múltiples dígitos
+    actualizarDisplay(valor1);
+  } else {
+    valor2 = valor2 * 10 + valor; // permite múltiples dígitos
+    actualizarDisplay(valor2);
+  }
+}
+
+/* ==== helpers UI ==== */
+function actualizarDisplay(texto) {
+  document.getElementById("display").innerText = String(texto);
+}
+
+function setOperador(simbolo) {
+  // Si ya había operador y valor2, calcular en cadena (p.ej. 12 + 3 - 4)
+  if (op && valor2 !== 0) {
+    const total = calcular(valor1, valor2, op);
+    actualizarDisplay(total);
+    valor1 = Number(total) || 0;
+    valor2 = 0;
+  }
+  op = simbolo;
+}
+
+/* ==== init ==== */
+actualizarDisplay("0");
+
+/* ==== referencias a botones (mantengo tus nombres) ==== */
+const btNum1 = document.querySelector("#num1");
+const btNum2 = document.querySelector("#num2");
+const btNum3 = document.querySelector("#num3");
+const btNum4 = document.querySelector("#num4");
+const btNum5 = document.querySelector("#num5");
+const btNum6 = document.querySelector("#num6");
+const btNum7 = document.querySelector("#num7");
+const btNum8 = document.querySelector("#num8");
+const btNum9 = document.querySelector("#num9");
+
+const btnOpSum = document.querySelector("#opSum");
+const btnOpIgual = document.querySelector("#opIgual");
+const btnOpResta = document.querySelector("#opResta");
+const btnOpDiv = document.querySelector("#opDivision");
+const btnOpMul = document.querySelector("#opMultiplicacion");
+
+/* ==== listeners números ==== */
+btNum1.addEventListener("click", function () {
+  asignarValor(1);
+});
+btNum2.addEventListener("click", function () {
+  asignarValor(2);
+});
+btNum3.addEventListener("click", function () {
+  asignarValor(3);
+});
+btNum4.addEventListener("click", function () {
+  asignarValor(4);
+});
+btNum5.addEventListener("click", function () {
+  asignarValor(5);
+});
+btNum6.addEventListener("click", function () {
+  asignarValor(6);
+});
+btNum7.addEventListener("click", function () {
+  asignarValor(7);
+});
+btNum8.addEventListener("click", function () {
+  asignarValor(8);
+});
+btNum9.addEventListener("click", function () {
+  asignarValor(9);
+});
+
+/* ==== listeners operadores ==== */
+btnOpSum.addEventListener("click", function () {
+  setOperador("+");
+});
+btnOpResta.addEventListener("click", function () {
+  setOperador("-");
+});
+btnOpMul.addEventListener("click", function () {
+  setOperador("*");
+});
+btnOpDiv.addEventListener("click", function () {
+  setOperador("/");
+});
+
+/* ==== listener igual ==== */
+btnOpIgual.addEventListener("click", function () {
+  // Si no hay operador o no se cargó el segundo valor, no hacemos nada raro
+  if (!op) {
+    actualizarDisplay(valor1);
+    return;
+  }
+
+  const total = calcular(valor1, valor2, op);
+  actualizarDisplay(total);
+
+  // Dejar listo para seguir calculando con el resultado
+  valor1 = Number(total) || 0;
+  valor2 = 0;
+  op = "";
+});
